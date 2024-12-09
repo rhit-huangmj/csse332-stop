@@ -52,7 +52,12 @@ struct arraylist {
 struct arraylist *al_new(void)
 {
   /* TODO: Add your code here. */
-  return 0;
+	struct arraylist *arr;
+	arr = (struct arraylist*)malloc(sizeof(struct arraylist));
+	arr->size = 0;
+	arr->capacity = DEF_ARRAY_LIST_CAPACITY;
+	arr->list = (int*)malloc(arr->capacity * sizeof(int));
+  return arr;
 }
 
 /**
@@ -66,6 +71,8 @@ struct arraylist *al_new(void)
 void al_free(struct arraylist *al)
 {
   /* TODO: Add your code here. */
+	free(al->list);
+	free(al);
 }
 
 /**
@@ -81,7 +88,10 @@ void al_free(struct arraylist *al)
 int al_get_at(struct arraylist *al, int pos)
 {
   /* TODO: Add your code here. */
-  return 0;
+  if(pos<al->size){
+	  return al->list[pos];
+  }
+  return 0xffffffff;
 }
 
 /**
@@ -99,6 +109,17 @@ int al_get_at(struct arraylist *al, int pos)
 void al_resize(struct arraylist *al)
 {
   /* TODO: Add your code here. */
+	int x = al->capacity;
+	int arr[x];
+	for(int i = 0; i<x; i++){
+		arr[i] = al->list[i];
+	}
+	free(al->list);
+	al->capacity = x * 2;
+	al->list = (int*) malloc(al->capacity * sizeof(int));
+	for(int i = 0; i<x;i++){
+		al->list[i] = arr[i];
+	}
 }
 
 /**
@@ -117,6 +138,11 @@ void al_resize(struct arraylist *al)
 void al_append(struct arraylist *al, int val)
 {
   /* TODO: Add your code here. */
+	if(al->size == al-> capacity){
+		al_resize(al);
+	}
+	al->list[al->size] = val;
+	al->size ++;
 }
 
 /**
